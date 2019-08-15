@@ -1,24 +1,23 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useState, useEffect } from 'react';
 import './App.css';
+import * as firebase from 'firebase';
 
-function App() {
+const App = () => {
+
+  const [speed, setSpeed] = useState(10)
+
+  useEffect(() => {
+    const rootRef = firebase.database().ref('/');
+    const speedRef = rootRef.child('speed');
+    speedRef.on('value', snap => {
+      setSpeed(snap.val())
+    });
+  })
+
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>Speed: {speed}</h1>
     </div>
   );
 }
